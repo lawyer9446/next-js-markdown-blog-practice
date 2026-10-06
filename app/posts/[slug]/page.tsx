@@ -9,7 +9,7 @@ import { PostNavigation } from '@/components/post-navigation'
 import { RelatedPosts } from '@/components/related-posts'
 import { TagList } from '@/components/tag-list'
 import { getAdjacentPosts, getAllPosts, getPostBySlug, getRelatedPosts } from '@/lib/posts'
-import { formatDate, getAuthor, siteConfig } from '@/lib/site'
+import { formatDate, getAuthor, absoluteSiteUrl, siteConfig, withBasePath } from '@/lib/site'
 
 type Params = Promise<{ slug: string }>
 
@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   if (!post) return {}
 
   const author = getAuthor(post.author)
-  const url = `/posts/${post.slug}`
+  const url = absoluteSiteUrl(`/posts/${post.slug}/`)
 
   return {
     title: post.title,
@@ -41,13 +41,13 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
       publishedTime: post.publishedAt,
       authors: [author.name],
       tags: post.tags,
-      images: [{ url: post.heroImage, alt: post.heroAlt }],
+      images: [{ url: absoluteSiteUrl(post.heroImage), alt: post.heroAlt }],
     },
     twitter: {
       card: 'summary_large_image',
       title: post.title,
       description: post.excerpt,
-      images: [post.heroImage],
+      images: [absoluteSiteUrl(post.heroImage)],
     },
   }
 }
@@ -66,12 +66,12 @@ export default async function PostPage({ params }: { params: Params }) {
     '@type': 'BlogPosting',
     headline: post.title,
     description: post.excerpt,
-    image: new URL(post.heroImage, siteConfig.url).toString(),
+    image: absoluteSiteUrl(post.heroImage),
     datePublished: post.publishedAt,
     keywords: post.tags.join(', '),
     author: { '@type': 'Person', name: author.name },
     publisher: { '@type': 'Organization', name: siteConfig.name },
-    mainEntityOfPage: new URL(`/posts/${post.slug}`, siteConfig.url).toString(),
+    mainEntityOfPage: absoluteSiteUrl(`/posts/${post.slug}/`),
   }
 
   return (
@@ -113,7 +113,7 @@ export default async function PostPage({ params }: { params: Params }) {
         <figure className="mt-10 md:mt-14">
           <div className="relative aspect-[16/9] overflow-hidden rounded-2xl bg-muted md:aspect-[21/9]">
             <Image
-              src={post.heroImage || '/placeholder.svg'}
+              src={withBasePath(post.heroImage || '/placeholder.svg')}
               alt={post.heroAlt}
               fill
               priority

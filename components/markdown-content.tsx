@@ -1,3 +1,4 @@
+import { withBasePath } from '@/lib/site'
 import Link from 'next/link'
 import ReactMarkdown, { type Components } from 'react-markdown'
 import remarkGfm from 'remark-gfm'
@@ -28,7 +29,7 @@ const components: Components = {
   ),
   pre: ({ node: _node, ...props }) => <pre tabIndex={0} {...props} />,
   // eslint-disable-next-line @next/next/no-img-element
-  img: ({ node: _node, alt = '', ...props }) => <img alt={alt} loading="lazy" className="rounded-lg" {...props} />,
+  img: ({ node: _node, alt = '', src, ...props }) => <img src={typeof src === 'string' ? withBasePath(src) : src} alt={alt} loading="lazy" className="rounded-lg" {...props} />,
 }
 
 export function MarkdownContent({ content }: { content: string }) {

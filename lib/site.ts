@@ -2,11 +2,8 @@ export const siteConfig = {
   name: 'The Margin',
   description:
     'Essays on typography, accessibility, and building thoughtful software for the web.',
-  url:
-    process.env.NEXT_PUBLIC_SITE_URL ??
-    (process.env.VERCEL_PROJECT_PRODUCTION_URL
-      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-      : 'http://localhost:3000'),
+  url: (process.env.NEXT_PUBLIC_SITE_URL ??
+    'https://lawyer9446.github.io/next-js-markdown-blog-practice').replace(/\/$/, ''),
   postsPerPage: 6,
 }
 
@@ -49,4 +46,17 @@ const tagLabels: Record<string, string> = {
 
 export function formatTag(tag: string) {
   return tagLabels[tag] ?? tag.charAt(0).toUpperCase() + tag.slice(1)
+}
+
+// Next.js adds basePath to Link hrefs, but public asset URLs need it explicitly.
+export function withBasePath(path: string): string {
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '/next-js-markdown-blog-practice'
+  if (!path.startsWith('/') || path.startsWith('//')) return path
+  if (path === basePath || path.startsWith(`${basePath}/`)) return path
+  return `${basePath}${path}`
+}
+
+export function absoluteSiteUrl(path: string): string {
+  if (/^(?:[a-z][a-z\d+.-]*:)?\/\//i.test(path)) return path
+  return `${siteConfig.url}/${path.replace(/^\//, '')}`
 }

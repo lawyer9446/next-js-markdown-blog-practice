@@ -1,3 +1,4 @@
+import { withBasePath } from '@/lib/site'
 import Image from 'next/image'
 import Link from 'next/link'
 import type { Author } from '@/lib/site'
@@ -9,7 +10,7 @@ export function AuthorBlock({ author }: { author: Author }) {
       className="flex flex-col gap-5 rounded-2xl border border-border bg-card p-6 sm:flex-row sm:items-start"
     >
       <Image
-        src={author.avatar || '/placeholder.svg'}
+        src={withBasePath(author.avatar || '/placeholder.svg')}
         alt={`Portrait of ${author.name}`}
         width={80}
         height={80}

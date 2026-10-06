@@ -2,7 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Clock } from 'lucide-react'
 import type { PostMeta } from '@/lib/posts'
-import { formatDate } from '@/lib/site'
+import { formatDate, withBasePath } from '@/lib/site'
 import { TagList } from './tag-list'
 
 type PostCardProps = {
@@ -16,7 +16,7 @@ export function PostCard({ post, headingLevel: Heading = 'h2', priority = false 
     <article className="group relative flex h-full flex-col overflow-hidden rounded-xl border border-border bg-card transition-shadow focus-within:ring-2 focus-within:ring-ring hover:shadow-lg hover:shadow-foreground/5">
       <div className="relative aspect-[16/10] overflow-hidden bg-muted">
         <Image
-          src={post.heroImage || '/placeholder.svg'}
+          src={withBasePath(post.heroImage || '/placeholder.svg')}
           alt=""
           fill
           priority={priority}

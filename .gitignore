@@ -14,3 +14,7 @@ node_modules
 .next/
 .DS_Store
 /.git-history-backup/
+
+# Static export and TypeScript build cache
+out/
+*.tsbuildinfo

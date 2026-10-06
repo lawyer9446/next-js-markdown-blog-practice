@@ -1,13 +1,13 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
-import { getAuthor, siteConfig } from '@/lib/site'
+import { getAuthor, siteConfig, absoluteSiteUrl, withBasePath } from '@/lib/site'
 import { getAllPosts } from '@/lib/posts'
 
 export const metadata: Metadata = {
   title: 'About',
   description: `About ${siteConfig.name} and its author.`,
-  alternates: { canonical: '/about' },
+  alternates: { canonical: absoluteSiteUrl('/about/') },
 }
 
 export default function AboutPage() {
@@ -22,7 +22,7 @@ export default function AboutPage() {
       </h1>
       <div className="mt-10 flex flex-col gap-6 sm:flex-row sm:items-center">
         <Image
-          src={author.avatar || '/placeholder.svg'}
+          src={withBasePath(author.avatar || '/placeholder.svg')}
           alt={`Portrait of ${author.name}`}
           width={120}
           height={120}

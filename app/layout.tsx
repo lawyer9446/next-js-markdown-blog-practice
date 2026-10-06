@@ -3,7 +3,7 @@ import type { Metadata, Viewport } from 'next'
 import { Inter, Newsreader } from 'next/font/google'
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
-import { siteConfig } from '@/lib/site'
+import { siteConfig, withBasePath, absoluteSiteUrl } from '@/lib/site'
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' })
@@ -22,13 +22,13 @@ export const metadata: Metadata = {
   },
   description: siteConfig.description,
   generator: 'v0.app',
-  alternates: { canonical: '/' },
+  alternates: { canonical: absoluteSiteUrl('/') },
   openGraph: {
     type: 'website',
     siteName: siteConfig.name,
     title: siteConfig.name,
     description: siteConfig.description,
-    url: '/',
+    url: absoluteSiteUrl('/'),
   },
   twitter: {
     card: 'summary_large_image',
@@ -37,11 +37,11 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: '/icon-light-32x32.png', media: '(prefers-color-scheme: light)' },
-      { url: '/icon-dark-32x32.png', media: '(prefers-color-scheme: dark)' },
-      { url: '/icon.svg', type: 'image/svg+xml' },
+      { url: withBasePath('/icon-light-32x32.png'), media: '(prefers-color-scheme: light)' },
+      { url: withBasePath('/icon-dark-32x32.png'), media: '(prefers-color-scheme: dark)' },
+      { url: withBasePath('/icon.svg'), type: 'image/svg+xml' },
     ],
-    apple: '/apple-icon.png',
+    apple: withBasePath('/apple-icon.png'),
   },
 }
 
@@ -71,7 +71,7 @@ export default function RootLayout({
           {children}
         </main>
         <SiteFooter />
-        {process.env.NODE_ENV === 'production' && <Analytics />}
+        {process.env.VERCEL === '1' && <Analytics />}
       </body>
     </html>
   )
